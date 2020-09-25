@@ -1,11 +1,11 @@
 export const CREATE_EXPENSE = "CREATE_EXPENSE"
 export const EDIT_EXPENSE = "EDIT_EXPENSE"
 export const DELETE_EXPENSE = "DELETE_EXPENSE"
-import { Expense } from "../../types";
+import { Expense, NewExpense } from "../../types";
 
 interface CreateExpenseAction {
   type: typeof CREATE_EXPENSE
-  expense: Expense
+  expense: NewExpense
 }
 
 interface EditExpense {
@@ -18,7 +18,7 @@ interface DeleteExpense {
   expenseId: number
 }
 
-export function createExpense(expense: Expense): CreateExpenseAction {
+export function createExpense(expense: NewExpense): CreateExpenseAction {
   return {
     type: CREATE_EXPENSE,
     expense

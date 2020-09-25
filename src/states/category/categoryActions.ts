@@ -1,11 +1,11 @@
 export const CREATE_CATEGORY = "CREATE_CATEGORY"
 export const EDIT_CATEGORY = "EDIT_CATEGORY"
 export const DELETE_CATEGORY = "DELETE_CATEGORY"
-import { Category } from "../../types";
+import { Category, NewCategory } from "../../types";
 
 interface CreateCategoryAction {
   type: typeof CREATE_CATEGORY
-  category: Category
+  category: NewCategory
 }
 
 interface EditCategory {
@@ -18,7 +18,7 @@ interface DeleteCategory {
   categoryId: number
 }
 
-export function createCategory(category: Category): CreateCategoryAction {
+export function createCategory(category: NewCategory): CreateCategoryAction {
   return {
     type: CREATE_CATEGORY,
     category
