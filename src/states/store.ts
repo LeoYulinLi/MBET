@@ -1,6 +1,6 @@
 import { createStore } from "redux";
-import { rootReducer } from "./rootReducer";
+import { rootReducer, RootState } from "./rootReducer";
 
-export default function configureStore(preloadedState = {}) {
+export default function configureStore(preloadedState: RootState) {
   return createStore(rootReducer, preloadedState)
 }
