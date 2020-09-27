@@ -25,8 +25,6 @@ export default function AddExpense() {
 
   const opened = useSelector((state: RootState) => state.ui.addExpense)
 
-  const categories = useSelector((state: RootState) => state.categories)
-
   const [amount, setAmount] = useState<number>(0)
   const [account, setAccount] = useState<Account | null>(null)
   const [category, setCategory] = useState<CategoryType | null>(null)
@@ -162,7 +160,7 @@ function CategorySelector({ setCategory }: CategorySelectorProps) {
 
   const dispatch = useDispatch()
 
-  const accounts = useSelector((state: RootState) => state.categories)
+  const categories = useSelector((state: RootState) => state.categories)
 
   type Option = { title: string, message?: string }
 
@@ -171,7 +169,7 @@ function CategorySelector({ setCategory }: CategorySelectorProps) {
   return (
     <Autocomplete
       id="account-selector"
-      options={ Object.values(accounts) as Option[] }
+      options={ Object.values(categories) as Option[] }
       onChange={ (event, newValue) => {
         if (newValue?.message) {
           const category = {
