@@ -1,20 +1,30 @@
+import { Expense } from "../../types";
+
 export const ADD_EXPENSE = "ADD_EXPENSE"
 
 export interface AddExpenseAction {
   type: typeof ADD_EXPENSE
-  opened: boolean
+  action: {
+    opened: boolean,
+    providedExpense?: Expense
+  }
 }
 
-export function openAddExpense(): AddExpenseAction {
+export function openAddExpense(providedExpense?: Expense): AddExpenseAction {
   return {
     type: ADD_EXPENSE,
-    opened: true
+    action: {
+      opened: true,
+      providedExpense
+    }
   }
 }
 
 export function closeAddExpense(): AddExpenseAction {
   return {
     type: ADD_EXPENSE,
-    opened: false
+    action: {
+      opened: false
+    }
   }
 }

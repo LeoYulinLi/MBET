@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete
 import { Account, Category as CategoryType } from "../types";
 import { createAccount } from "../states/account/accountActions";
 import FormControl from "@material-ui/core/FormControl";
-import { createExpense } from "../states/expense/expenseActions";
+import { createExpense, editExpense } from "../states/expense/expenseActions";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import { createCategory } from "../states/category/categoryActions";
@@ -21,15 +21,26 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Box from "@material-ui/core/Box/Box";
 
-export default function AddExpense() {
 
-  const opened = useSelector((state: RootState) => state.ui.addExpense)
+export default function EditExpense() {
+
+  const { opened, providedExpense } = useSelector((state: RootState) => state.ui.addExpense)
 
   const [title, setTitle] = useState("")
   const [amount, setAmount] = useState<number>(0)
   const [account, setAccount] = useState<Account | null>(null)
   const [category, setCategory] = useState<CategoryType | null>(null)
-  const [date, setDate] = useState<Date | null>(null)
+  const [date, setDate] = useState<Date>(new Date(Date.now()))
+
+  useEffect(() => {
+    if (providedExpense) {
+      setTitle(providedExpense.title)
+      setAmount(providedExpense.amount)
+      setDate(providedExpense.date)
+    }
+  }, [providedExpense])
+
+  const titleRef = useRef<HTMLDivElement | null>(null)
 
   const dispatch = useDispatch()
 
@@ -37,18 +48,43 @@ export default function AddExpense() {
     dispatch(closeAddExpense())
   }
 
+  function resetFields() {
+    setTitle("")
+    setAmount(0)
+    setAccount(null)
+    setCategory(null)
+    setDate(new Date(Date.now()))
+    titleRef.current?.focus()
+  }
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    handleSave(event)
+    resetFields()
+    if (providedExpense) closeDialog()
+  }
+
+  function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!date || !account || !category) return
-    dispatch(createExpense({ accountId: account.id, amount, categoryId: category.id, date, title }))
-    closeDialog()
+    if (providedExpense) {
+      dispatch(editExpense({
+        id: providedExpense.id,
+        accountId: account.id,
+        amount,
+        categoryId: category.id,
+        date,
+        title
+      }))
+    } else {
+      dispatch(createExpense({ accountId: account.id, amount, categoryId: category.id, date, title }))
+    }
   }
 
   return (
     <Dialog open={ opened } onClose={ closeDialog }>
       <Box p={ 1 }>
         <form id="addExpenseForm" onSubmit={ handleSubmit }>
-          <DialogTitle>Add Expense</DialogTitle>
+          <DialogTitle>{ providedExpense ? "Edit" : "Add" } Expense</DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -58,6 +94,8 @@ export default function AddExpense() {
               onChange={ it => setTitle(it.target.value) }
               type="text"
               fullWidth
+              required
+              ref={ titleRef }
             />
             <FormControl fullWidth>
               <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
@@ -67,6 +105,7 @@ export default function AddExpense() {
                 onChange={ it => setAmount(+(it.target.value)) }
                 type="number"
                 startAdornment={ <InputAdornment position="start">$</InputAdornment> }
+                required
               />
             </FormControl>
             <AccountSelector setAccount={ setAccount } />
@@ -80,10 +119,11 @@ export default function AddExpense() {
                 id="date-picker-inline"
                 label="Date picker inline"
                 value={ date }
-                onChange={ it => setDate(it) }
+                onChange={ it => it && setDate(it) }
                 KeyboardButtonProps={ {
                   'aria-label': 'change date',
                 } }
+                required
               />
             </MuiPickersUtilsProvider>
 
@@ -93,7 +133,7 @@ export default function AddExpense() {
               Cancel
             </Button>
             <Button color="primary" type="submit" variant="contained">
-              Create
+              Submit
             </Button>
           </DialogActions>
         </form>

@@ -1,9 +1,13 @@
 import { AddExpenseAction } from "./uiActions";
 import { combineReducers } from "redux";
+import { Expense } from "../../types";
 
-function addExpenseReducer(state: boolean = false, action: AddExpenseAction) {
+function addExpenseReducer(
+  state: { opened: boolean, providedExpense?: Expense } = { opened: false },
+  action: AddExpenseAction
+) {
   if (action.type === "ADD_EXPENSE") {
-    return action.opened
+    return action.action
   } else {
     return state
   }

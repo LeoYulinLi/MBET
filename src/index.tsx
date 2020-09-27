@@ -44,7 +44,9 @@ const store = configureStore({
     }
   },
   ui: {
-    addExpense: false
+    addExpense: {
+      opened: false
+    }
   }
 })
 

@@ -6,7 +6,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Overview from "./components/Overview";
 import Fab from "@material-ui/core/Fab";
 import { Add } from "@material-ui/icons";
-import AddExpense from "./components/AddExpense";
+import EditExpense from "./components/EditExpense";
 import { useDispatch } from "react-redux";
 import { openAddExpense } from "./states/ui/uiActions";
 import Nav from "./components/Nav";
@@ -36,7 +36,7 @@ function App() {
   return (
 
     <Router>
-      <AddExpense />
+      <EditExpense />
       <Nav />
       <Tooltip title="Add new expense (ctrl+N)">
         <Fab color="primary" aria-label="add" className={ classes.fab } onClick={ openAddExpenseDialog }>
