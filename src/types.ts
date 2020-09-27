@@ -19,6 +19,7 @@ export type NewCategory = Omit<Category, "id">
 
 export interface Expense {
   id: number
+  title: string
   amount: number
   date: Date
   accountId: number

@@ -25,6 +25,7 @@ export default function AddExpense() {
 
   const opened = useSelector((state: RootState) => state.ui.addExpense)
 
+  const [title, setTitle] = useState("")
   const [amount, setAmount] = useState<number>(0)
   const [account, setAccount] = useState<Account | null>(null)
   const [category, setCategory] = useState<CategoryType | null>(null)
@@ -39,7 +40,7 @@ export default function AddExpense() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!date || !account || !category) return
-    dispatch(createExpense({ accountId: account.id, amount, categoryId: category.id, date }))
+    dispatch(createExpense({ accountId: account.id, amount, categoryId: category.id, date, title }))
     closeDialog()
   }
 
@@ -53,6 +54,8 @@ export default function AddExpense() {
               autoFocus
               id="expense-title"
               label="Title"
+              value={ title }
+              onChange={ it => setTitle(it.target.value) }
               type="text"
               fullWidth
             />
@@ -123,8 +126,8 @@ function AccountSelector({ setAccount }: AccountSelectorProps) {
           const account = {
             id: Math.random(),
             title: newValue.title,
-            color: "",
-            icon: "",
+            color: "#fff",
+            icon: "account_balance",
             type: ""
           }
           dispatch(createAccount(account))
@@ -176,8 +179,8 @@ function CategorySelector({ setCategory }: CategorySelectorProps) {
           const category = {
             id: Math.random(),
             title: newValue.title,
-            color: "",
-            icon: ""
+            color: "#fff",
+            icon: "account_balance_wallet"
           }
           dispatch(createCategory(category))
           setCategory(category)

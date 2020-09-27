@@ -21,12 +21,28 @@ const store = configureStore({
       id: 1234,
       title: "Bank of the Bank",
       color: "#1776d7",
-      icon: "account_balance",
+      icon: "add",
       type: "checking"
     }
   },
-  categories: {},
-  expenses: {},
+  categories: {
+    1024: {
+      id: 1024,
+      title: "Food",
+      color: "#ffbd55",
+      icon: "local_pizza"
+    }
+  },
+  expenses: {
+    582: {
+      id: 582,
+      title: "Unagi",
+      amount: 10.24,
+      accountId: 1234,
+      categoryId: 1024,
+      date: new Date("2020-02-02")
+    }
+  },
   ui: {
     addExpense: false
   }

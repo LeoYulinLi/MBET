@@ -66,14 +66,13 @@ export default function Nav() {
       return (
         <AppBar position="static">
           <Container maxWidth="lg">
-            {/*<Typography variant="h6">MBET</Typography>*/ }
             <Grid container justify="space-between" alignItems="center">
               <Typography variant="h6">MBET</Typography>
               <Tabs value={ location.pathname } onChange={ setTab }>
                 <Tab component={ Link } to="/overview" label="Overview" { ...tabProps("/overview") } />
                 <Tab component={ Link } to="/accounts" label="Accounts" { ...tabProps("/accounts") } />
                 <Tab component={ Link } to="/" label="Categories" { ...tabProps("/categories") } />
-                <Tab component={ Link } to="/" label="Expenses" { ...tabProps("/expenses") } />
+                <Tab component={ Link } to="/expenses" label="Expenses" { ...tabProps("/expenses") } />
               </Tabs>
             </Grid>
           </Container>

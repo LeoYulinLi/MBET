@@ -10,6 +10,7 @@ import AddExpense from "./components/AddExpense";
 import { useDispatch } from "react-redux";
 import { openAddExpense } from "./states/ui/uiActions";
 import Nav from "./components/Nav";
+import ExpenseIndex from "./components/ExpenseIndex";
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
         <Switch>
           <Route exact path="/overview" component={ Overview } />
           <Route exact path="/accounts" component={ AccountIndex } />
+          <Route exact path="/expenses" component={ ExpenseIndex } />
         </Switch>
       </Container>
     </Router>
