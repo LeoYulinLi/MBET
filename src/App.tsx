@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { openAddExpense } from "./states/ui/uiActions";
 import Nav from "./components/Nav";
 import ExpenseIndex from "./components/ExpenseIndex";
+import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 
 function App() {
 
@@ -37,9 +38,11 @@ function App() {
     <Router>
       <AddExpense />
       <Nav />
-      <Fab color="primary" aria-label="add" className={ classes.fab } onClick={ openAddExpenseDialog }>
-        <Add />
-      </Fab>
+      <Tooltip title="Add new expense (ctrl+N)">
+        <Fab color="primary" aria-label="add" className={ classes.fab } onClick={ openAddExpenseDialog }>
+          <Add />
+        </Fab>
+      </Tooltip>
       <Container maxWidth="lg">
         <Switch>
           <Route exact path="/overview" component={ Overview } />

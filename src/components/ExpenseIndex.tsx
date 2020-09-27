@@ -12,6 +12,10 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Icon from "@material-ui/core/Icon";
 import styled from "@material-ui/core/styles/styled";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import theme from "../styles/theme";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
 
 export default function () {
@@ -20,8 +24,79 @@ export default function () {
   const accounts = useSelector((state: RootState) => state.accounts)
   const categories = useSelector((state: RootState) => state.categories)
 
+  const isPhone = useMediaQuery(theme.breakpoints.down('sm'));
+
   function renderBaseOnEmpty() {
+
     const expenseValues = Object.values(expenses)
+
+    function renderBaseOnScreenSize() {
+      if (isPhone) {
+        return (
+          <List>
+            { expenseValues.map(expense => (
+              <ListItem divider>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <Grid container justify="space-between" alignItems="baseline">
+                      <Grid item xs={9}>
+                        <Typography variant="h5">{ expense.title }</Typography>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography variant="h6" align="right">${ expense.amount }</Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item xs={9}>
+                        <Grid container spacing={1}>
+                          <Grid item>
+                            <CustomChip value={accounts[expense.accountId]}/>
+                          </Grid>
+                          <Grid item>
+                            <CustomChip value={categories[expense.categoryId]}/>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={3}>
+                        <Typography variant="subtitle2" align="right">{ expense.date.toLocaleDateString() }</Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </ListItem>
+            )) }
+          </List>
+        )
+      } else {
+        return (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Account</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { expenseValues.map(expense => (
+                <TableRow>
+                  <TableCell>{ expense.title }</TableCell>
+                  <TableCell>{ expense.date.toLocaleDateString() }</TableCell>
+                  <TableCell><CustomChip value={accounts[expense.accountId]}/></TableCell>
+                  <TableCell><CustomChip value={categories[expense.categoryId]}/></TableCell>
+                  <TableCell>${ expense.amount }</TableCell>
+                </TableRow>
+              )) }
+            </TableBody>
+          </Table>
+        )
+      }
+    }
+
     if (expenseValues.length === 0) {
       return (
         <Grid container justify="center">
@@ -33,35 +108,12 @@ export default function () {
         </Grid>
       )
     } else {
-      return (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Account</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Amount</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            { expenseValues.map(expense => (
-              <TableRow>
-                <TableCell>{ expense.title }</TableCell>
-                <TableCell>{ expense.date.toLocaleDateString() }</TableCell>
-                <TableCell><CustomChip value={accounts[expense.accountId]}/></TableCell>
-                <TableCell><CustomChip value={categories[expense.categoryId]}/></TableCell>
-                <TableCell>${ expense.amount }</TableCell>
-              </TableRow>
-            )) }
-          </TableBody>
-        </Table>
-      )
+      return renderBaseOnScreenSize()
     }
   }
 
   return (
-    <Box m={4}>
+    <Box my={4}>
       { renderBaseOnEmpty() }
     </Box>
   )
@@ -83,7 +135,7 @@ function CustomChip({ value }: CustomChipProps) {
   })
 
   return (
-    <BackgroundChip label={value.title} icon={<ColorIcon fontSize="small">{ value.icon }</ColorIcon>}/>
+    <BackgroundChip size="small" label={value.title} icon={<ColorIcon fontSize="small">{ value.icon }</ColorIcon>}/>
   )
 
 }
