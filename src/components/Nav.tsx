@@ -14,7 +14,7 @@ import Grid from "@material-ui/core/Grid";
 
 export default function Nav() {
 
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('sm'));
+  const isPhone = useMediaQuery(theme.breakpoints.down('sm'));
 
   const location = useLocation();
   const history = useHistory();
@@ -44,24 +44,7 @@ export default function Nav() {
   const classes = useStyles();
 
   function pickNav() {
-    if (isLargeScreen) {
-      return (
-        <AppBar position="static">
-          <Container maxWidth="lg">
-            {/*<Typography variant="h6">MBET</Typography>*/ }
-            <Grid container justify="space-between" alignItems="center">
-              <Typography variant="h6">MBET</Typography>
-              <Tabs value={ location.pathname } onChange={ setTab }>
-                <Tab component={ Link } to="/overview" label="Overview" { ...tabProps("/overview") } />
-                <Tab component={ Link } to="/accounts" label="Accounts" { ...tabProps("/accounts") } />
-                <Tab component={ Link } to="/" label="Categories" { ...tabProps("/categories") } />
-                <Tab component={ Link } to="/" label="Expenses" { ...tabProps("/expenses") } />
-              </Tabs>
-            </Grid>
-          </Container>
-        </AppBar>
-      )
-    } else {
+    if (isPhone) {
       return (
         <>
           <AppBar position="static">
@@ -78,6 +61,23 @@ export default function Nav() {
             <BottomNavigationAction label="Expenses" value="/expenses" icon={ <Receipt /> } />
           </BottomNavigation>
         </>
+      )
+    } else {
+      return (
+        <AppBar position="static">
+          <Container maxWidth="lg">
+            {/*<Typography variant="h6">MBET</Typography>*/ }
+            <Grid container justify="space-between" alignItems="center">
+              <Typography variant="h6">MBET</Typography>
+              <Tabs value={ location.pathname } onChange={ setTab }>
+                <Tab component={ Link } to="/overview" label="Overview" { ...tabProps("/overview") } />
+                <Tab component={ Link } to="/accounts" label="Accounts" { ...tabProps("/accounts") } />
+                <Tab component={ Link } to="/" label="Categories" { ...tabProps("/categories") } />
+                <Tab component={ Link } to="/" label="Expenses" { ...tabProps("/expenses") } />
+              </Tabs>
+            </Grid>
+          </Container>
+        </AppBar>
       )
     }
   }

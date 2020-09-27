@@ -13,9 +13,16 @@ const store = configureStore({
     1345: {
       id: 1345,
       title: "12435",
-      color: "black",
-      icon: "bank",
+      color: "#000",
+      icon: "account_balance",
       type: "saving"
+    },
+    1234: {
+      id: 1234,
+      title: "Bank of the Bank",
+      color: "#1776d7",
+      icon: "account_balance",
+      type: "checking"
     }
   },
   categories: {},
