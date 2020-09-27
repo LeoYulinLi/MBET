@@ -1,11 +1,12 @@
+import { Account } from "../../types";
+
 export const CREATE_ACCOUNT = "CREATE_ACCOUNT"
 export const EDIT_ACCOUNT = "EDIT_ACCOUNT"
 export const DELETE_ACCOUNT = "DELETE_ACCOUNT"
-import { Account, NewAccount } from "../../types";
 
 interface CreateAccountAction {
   type: typeof CREATE_ACCOUNT
-  account: NewAccount
+  account: Account
 }
 
 interface EditAccount {
@@ -18,7 +19,7 @@ interface DeleteAccount {
   accountId: number
 }
 
-export function createAccount(account: NewAccount): CreateAccountAction {
+export function createAccount(account: Account): CreateAccountAction {
   return {
     type: CREATE_ACCOUNT,
     account

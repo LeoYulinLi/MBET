@@ -1,12 +1,15 @@
 import React from 'react'
 import './styles/index.scss'
 import AccountIndex from "./components/AccountIndex";
-import { AppBar, Container, createStyles, makeStyles, Toolbar } from "@material-ui/core";
-import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { Container, createStyles, makeStyles } from "@material-ui/core";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import Overview from "./components/Overview";
-import Button from "@material-ui/core/Button";
 import Fab from "@material-ui/core/Fab";
 import { Add } from "@material-ui/icons";
+import AddExpense from "./components/AddExpense";
+import { useDispatch } from "react-redux";
+import { openAddExpense } from "./states/ui/uiActions";
+import Nav from "./components/Nav";
 
 function App() {
 
@@ -14,26 +17,29 @@ function App() {
     createStyles({
       fab: {
         position: 'absolute',
-        bottom: theme.spacing(4),
+        bottom: theme.spacing(12),
         right: theme.spacing(4),
-      },
+      }
     }),
   );
 
   const classes = useStyles();
 
+  const dispatch = useDispatch()
+
+  function openAddExpenseDialog() {
+    dispatch(openAddExpense())
+  }
+
   return (
 
     <Router>
-      <AppBar position="static">
-        <Toolbar>
-          <Button color="inherit" size="large" component={ Link } to="/">MBET</Button>
-        </Toolbar>
-      </AppBar>
-      <Fab color="primary" aria-label="add" className={classes.fab}>
+      <AddExpense />
+      <Nav />
+      <Fab color="primary" aria-label="add" className={ classes.fab } onClick={ openAddExpenseDialog }>
         <Add />
       </Fab>
-      <Container maxWidth="sm">
+      <Container maxWidth="lg">
         <Switch>
           <Route exact path="/overview" component={ Overview } />
           <Route exact path="/accounts" component={ AccountIndex } />

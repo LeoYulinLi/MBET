@@ -19,7 +19,10 @@ const store = configureStore({
     }
   },
   categories: {},
-  expenses: {}
+  expenses: {},
+  ui: {
+    addExpense: false
+  }
 })
 
 ReactDOM.render(

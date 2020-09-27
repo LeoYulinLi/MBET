@@ -1,7 +1,8 @@
+import { Expense, NewExpense } from "../../types";
+
 export const CREATE_EXPENSE = "CREATE_EXPENSE"
 export const EDIT_EXPENSE = "EDIT_EXPENSE"
 export const DELETE_EXPENSE = "DELETE_EXPENSE"
-import { Expense, NewExpense } from "../../types";
 
 interface CreateExpenseAction {
   type: typeof CREATE_EXPENSE
