@@ -9,6 +9,8 @@ import Tab from "@material-ui/core/Tab";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import { AccountBalance, BarChart, Category, Receipt } from "@material-ui/icons";
+import Toolbar from "@material-ui/core/Toolbar";
+import Grid from "@material-ui/core/Grid";
 
 export default function Nav() {
 
@@ -17,9 +19,16 @@ export default function Nav() {
   const location = useLocation();
   const history = useHistory();
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+  const setTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     history.push(newValue)
   };
+
+  function tabProps(index: string) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
 
   const useStyles = makeStyles(theme =>
     createStyles({
@@ -27,6 +36,7 @@ export default function Nav() {
         width: '100%',
         position: 'absolute',
         bottom: 0,
+        background: "#f0f0f0"
       }
     }),
   );
@@ -38,27 +48,36 @@ export default function Nav() {
       return (
         <AppBar position="static">
           <Container maxWidth="lg">
-            {/*<Typography variant="h6">MBET</Typography>*/}
-            <Tabs>
+            {/*<Typography variant="h6">MBET</Typography>*/ }
+            <Grid container justify="space-between" alignItems="center">
               <Typography variant="h6">MBET</Typography>
-              <Tab component={ Link } to="/overview" label="Overview" />
-              <Tab component={ Link } to="/accounts" label="Accounts" />
-              <Tab component={ Link } to="/" label="Categories" />
-              <Tab component={ Link } to="/" label="Expenses" />
-            </Tabs>
+              <Tabs value={ location.pathname } onChange={ setTab }>
+                <Tab component={ Link } to="/overview" label="Overview" { ...tabProps("/overview") } />
+                <Tab component={ Link } to="/accounts" label="Accounts" { ...tabProps("/accounts") } />
+                <Tab component={ Link } to="/" label="Categories" { ...tabProps("/categories") } />
+                <Tab component={ Link } to="/" label="Expenses" { ...tabProps("/expenses") } />
+              </Tabs>
+            </Grid>
           </Container>
         </AppBar>
       )
     } else {
       return (
-        <BottomNavigation value={location.pathname} onChange={handleChange} className={ classes.bottomNav } style={{
-          background: "#f0f0f0"
-        }}>
-          <BottomNavigationAction label="Overview" value="/overview" icon={<BarChart />} />
-          <BottomNavigationAction label="Accounts" value="/accounts" icon={<AccountBalance />} />
-          <BottomNavigationAction label="Categories" value="/categories" icon={<Category />} />
-          <BottomNavigationAction label="Expenses" value="/expenses" icon={<Receipt />} />
-        </BottomNavigation>
+        <>
+          <AppBar position="static">
+            <Container maxWidth="lg">
+              <Toolbar>
+                <Typography variant="h6">MBET</Typography>
+              </Toolbar>
+            </Container>
+          </AppBar>
+          <BottomNavigation value={ location.pathname } onChange={ setTab } className={ classes.bottomNav }>
+            <BottomNavigationAction label="Overview" value="/overview" icon={ <BarChart /> } />
+            <BottomNavigationAction label="Accounts" value="/accounts" icon={ <AccountBalance /> } />
+            <BottomNavigationAction label="Categories" value="/categories" icon={ <Category /> } />
+            <BottomNavigationAction label="Expenses" value="/expenses" icon={ <Receipt /> } />
+          </BottomNavigation>
+        </>
       )
     }
   }

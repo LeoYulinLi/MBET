@@ -36,8 +36,8 @@ export default function AddExpense() {
     dispatch(closeAddExpense())
   }
 
-  function handleSubmit() {
-    console.log("submit")
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     if (!date || !account || !category) return
     dispatch(createExpense({ accountId: account.id, amount, categoryId: category.id, date }))
     closeDialog()
@@ -45,7 +45,7 @@ export default function AddExpense() {
 
   return (
     <Dialog open={ opened } onClose={ closeDialog }>
-      <Box p={1}>
+      <Box p={ 1 }>
         <form id="addExpenseForm" onSubmit={ handleSubmit }>
           <DialogTitle>Add Expense</DialogTitle>
           <DialogContent>
@@ -60,13 +60,14 @@ export default function AddExpense() {
               <InputLabel htmlFor="standard-adornment-amount">Amount</InputLabel>
               <Input
                 id="standard-adornment-amount"
-                value={amount}
+                value={ amount }
                 onChange={ it => setAmount(+(it.target.value)) }
-                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                type="number"
+                startAdornment={ <InputAdornment position="start">$</InputAdornment> }
               />
             </FormControl>
-            <AccountSelector setAccount={ setAccount }/>
-            <CategorySelector setCategory={ setCategory }/>
+            <AccountSelector setAccount={ setAccount } />
+            <CategorySelector setCategory={ setCategory } />
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <KeyboardDatePicker
                 disableToolbar
