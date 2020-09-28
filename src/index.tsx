@@ -29,7 +29,7 @@ const store = configureStore({
     1024: {
       id: 1024,
       title: "Food",
-      color: "#ffbd55",
+      color: "#ffc107",
       icon: "local_pizza"
     },
     690: {

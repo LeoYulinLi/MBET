@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../states/rootReducer";
-import { closeEditAccount } from "../states/ui/uiActions";
+import { closeEditCategory } from "../states/ui/uiActions";
 import Dialog from "@material-ui/core/Dialog";
 import Box from "@material-ui/core/Box/Box";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import React, { useEffect, useState } from "react";
-import { createAccount, editAccount } from "../states/account/accountActions";
+import { createCategory, deleteCategory, editCategory } from "../states/category/categoryActions";
 import { DialogContent } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
@@ -19,81 +19,75 @@ import Grid from "@material-ui/core/Grid";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import { deleteCategory } from "../states/category/categoryActions";
 
 
-export default function EditAccount() {
+export default function EditCategory() {
 
-  const { opened, providedAccount } = useSelector((state: RootState) => state.ui.editAccount)
+  const { opened, providedCategory } = useSelector((state: RootState) => state.ui.editCategory)
 
   const expense = useSelector((state: RootState) => state.expenses)
 
   const [title, setTitle] = useState("")
   const [color, setColor] = useState("#fff")
-  const [icon, setIcon] = useState("account_balance")
-  const [type, setType] = useState("")
+  const [icon, setIcon] = useState("category_balance")
 
   const dispatch = useDispatch()
 
   function closeDialog() {
-    dispatch(closeEditAccount())
+    dispatch(closeEditCategory())
   }
 
   useEffect(() => {
-    if (providedAccount) {
-      const { title, color, icon, type } = providedAccount
+    if (providedCategory) {
+      const { title, color, icon } = providedCategory
       setTitle(title)
       setColor(color)
       setIcon(icon)
-      setType(type)
     } else {
       resetFields()
     }
-  }, [providedAccount])
+  }, [providedCategory])
 
   function resetFields() {
     setTitle("")
     setColor("#fff")
-    setIcon("account_balance")
-    setType("")
+    setIcon("category_balance")
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     handleSave(event)
     resetFields()
-    if (providedAccount) closeDialog()
+    if (providedCategory) closeDialog()
   }
 
   function handleSave(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (!title || !color || !icon || !type) return
-    if (providedAccount) {
-      dispatch(editAccount({
-        id: providedAccount.id,
+    if (!title || !color || !icon) return
+    if (providedCategory) {
+      dispatch(editCategory({
+        id: providedCategory.id,
         title,
         color,
-        icon,
-        type
+        icon
       }))
     } else {
-      dispatch(createAccount({
+      dispatch(createCategory({
         id: Math.random(),
         title,
         color,
-        icon,
-        type
+        icon
       }))
     }
   }
 
   function handleDelete() {
-    dispatch(deleteCategory(providedAccount!!.id))
+    dispatch(deleteCategory(providedCategory!!.id))
     closeDialog()
   }
 
   function deleteButton() {
-    if (providedAccount) {
-      if (Object.values(expense).some(it => it.accountId === providedAccount.id)) {
+    if (providedCategory) {
+      if (Object.values(expense).some(it => it.categoryId === providedCategory.id)) {
         return (
           <Tooltip title="There are still expenses using this category, please delete them first">
             <span>
@@ -119,7 +113,7 @@ export default function EditAccount() {
     <Dialog open={ opened } onClose={ closeDialog }>
       <Box p={ 1 }>
         <form id="addExpenseForm" onSubmit={ handleSubmit }>
-          <DialogTitle>{ providedAccount ? "Edit" : "Add" } Account</DialogTitle>
+          <DialogTitle>{ providedCategory ? "Edit" : "Add" } Category</DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -132,50 +126,40 @@ export default function EditAccount() {
               required
             />
             <FormControl fullWidth>
-              <InputLabel id="account-color">Color</InputLabel>
+              <InputLabel id="category-color">Color</InputLabel>
               <Select
-                labelId="account-color"
-                id="account-color-select"
+                labelId="category-color"
+                id="category-color-select"
                 value={ color }
-                onChange={ it => setColor(it.target.value as string)}
+                onChange={ it => setColor(it.target.value as string) }
               >
                 { colors.map(c => (
-                  <MenuItem value={c}>
-                    <Typography style={{ color: c }}>
+                  <MenuItem value={ c }>
+                    <Typography style={ { color: c } }>
                       { c }
                     </Typography>
                   </MenuItem>
-                ))}
+                )) }
               </Select>
             </FormControl>
             <FormControl fullWidth>
-              <InputLabel id="account-icon">Icon</InputLabel>
+              <InputLabel id="category-icon">Icon</InputLabel>
               <Select
-                labelId="account-icon"
-                id="account-icon-select"
+                labelId="category-icon"
+                id="category-icon-select"
                 value={ icon }
-                onChange={ it => setIcon(it.target.value as string)}
+                onChange={ it => setIcon(it.target.value as string) }
               >
                 { icons.map(i => (
                   <MenuItem value={ i }>
-                    <Grid container spacing={1} alignItems="center">
+                    <Grid container spacing={ 1 } alignItems="center">
                       <Grid item><Icon fontSize="small">{ i }</Icon></Grid>
                       <Grid item>{ i }</Grid>
                     </Grid>
                   </MenuItem>
-                ))}
+                )) }
               </Select>
             </FormControl>
-            <TextField
-              autoFocus
-              id="expense-type"
-              label="Type"
-              value={ type }
-              onChange={ it => setType(it.target.value) }
-              type="text"
-              fullWidth
-              required
-            />
           </DialogContent>
           <DialogActions>
             { deleteButton() }

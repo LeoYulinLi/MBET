@@ -13,6 +13,8 @@ import Nav from "./components/Nav";
 import ExpenseIndex from "./components/ExpenseIndex";
 import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import EditAccount from "./components/EditAccount";
+import CategoryIndex from "./components/CategoryIndex";
+import EditCategory from "./components/EditCategory";
 
 function App() {
 
@@ -39,6 +41,7 @@ function App() {
     <Router>
       <EditExpense />
       <EditAccount />
+      <EditCategory />
       <Nav />
       <Tooltip title="Add new expense (ctrl+N)">
         <Fab color="primary" aria-label="add" className={ classes.fab } onClick={ openAddExpenseDialog }>
@@ -49,6 +52,7 @@ function App() {
         <Switch>
           <Route exact path="/overview" component={ Overview } />
           <Route exact path="/accounts" component={ AccountIndex } />
+          <Route exact path="/categories" component={ CategoryIndex } />
           <Route exact path="/expenses" component={ ExpenseIndex } />
         </Switch>
       </Container>

@@ -69,6 +69,7 @@ export const icons = [
   "kitchen",
   "laptop_mac",
   "local_parking",
+  "local_pizza",
   "location_on",
   "music_note",
   "navigation",

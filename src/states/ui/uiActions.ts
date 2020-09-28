@@ -66,7 +66,7 @@ export interface EditCategoryAction {
   }
 }
 
-export function openCategoryAccount(providedCategory?: Category) {
+export function openEditCategory(providedCategory?: Category) {
   return {
     type: OPEN_EDIT_CATEGORY,
     action: {
@@ -76,7 +76,7 @@ export function openCategoryAccount(providedCategory?: Category) {
   }
 }
 
-export function closeCategoryAccount() {
+export function closeEditCategory() {
   return {
     type: OPEN_EDIT_CATEGORY,
     action: {

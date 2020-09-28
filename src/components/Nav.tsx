@@ -71,7 +71,7 @@ export default function Nav() {
               <Tabs value={ location.pathname } onChange={ setTab }>
                 <Tab component={ Link } to="/overview" label="Overview" { ...tabProps("/overview") } />
                 <Tab component={ Link } to="/accounts" label="Accounts" { ...tabProps("/accounts") } />
-                <Tab component={ Link } to="/" label="Categories" { ...tabProps("/categories") } />
+                <Tab component={ Link } to="/categories" label="Categories" { ...tabProps("/categories") } />
                 <Tab component={ Link } to="/expenses" label="Expenses" { ...tabProps("/expenses") } />
               </Tabs>
             </Grid>
