@@ -7,7 +7,7 @@ export default function configureStore(preloadedState: RootState) {
 
   function createStoreBaseOnLocalStorage() {
     if (dataRaw) {
-      const storeData = <RootState>JSON.parse(dataRaw)
+      const storeData = JSON.parse(dataRaw) as RootState
       const storeDateFixed = { ...storeData }
       Object.values(storeData.expenses).forEach(it => {
         storeDateFixed.expenses[it.id].date = new Date(it.date)
