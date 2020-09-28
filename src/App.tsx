@@ -16,6 +16,7 @@ import EditAccount from "./components/EditAccount";
 import CategoryIndex from "./components/CategoryIndex";
 import EditCategory from "./components/EditCategory";
 import Box from "@material-ui/core/Box";
+import Home from "./components/Home";
 
 function App() {
 
@@ -57,6 +58,7 @@ function App() {
             <Route exact path="/accounts" component={ AccountIndex } />
             <Route exact path="/categories" component={ CategoryIndex } />
             <Route exact path="/expenses" component={ ExpenseIndex } />
+            <Route path="/" component={ Home } />
           </Switch>
         </Box>
       </Container>
