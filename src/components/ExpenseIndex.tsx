@@ -41,8 +41,6 @@ export default function () {
   const accountFilterState = useState<number[]>([])
   const categoryFilterState = useState<number[]>([])
 
-  const dateUtils = new DateFnsUtils()
-
   const [startDate, setStartDate] = useState<Date | null>(null)
   const [endDate, setEndDate] = useState<Date | null>(null)
 
@@ -56,6 +54,9 @@ export default function () {
   const [order] = orderState
 
   useEffect(() => {
+
+    const dateUtils = new DateFnsUtils()
+
     setExpenseValues(Object.values(expenses).filter(it => {
       if (accountFilters.length > 0 && !accountFilters.includes(it.accountId)) {
         return false
@@ -98,7 +99,7 @@ export default function () {
       }
 
     }))
-  }, [accountFilters, categoryFilters, sortBy, order, expenses, startDate, endDate])
+  }, [accountFilters, categoryFilters, sortBy, order, expenses, startDate, endDate, accounts, categories])
 
   const dispatch = useDispatch()
 
