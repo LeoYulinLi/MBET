@@ -32,13 +32,18 @@ export default function EditExpense() {
   const [category, setCategory] = useState<CategoryType | null>(null)
   const [date, setDate] = useState<Date | null>(new Date(Date.now()))
 
+  const categories = useSelector((state: RootState) => state.categories)
+  const accounts = useSelector((state: RootState) => state.accounts)
+
   useEffect(() => {
     if (providedExpense) {
       setTitle(providedExpense.title)
       setAmount(providedExpense.amount)
+      setAccount(accounts[providedExpense.accountId])
+      setCategory(categories[providedExpense.categoryId])
       setDate(providedExpense.date)
     }
-  }, [providedExpense])
+  }, [providedExpense, accounts, categories])
 
   const titleRef = useRef<HTMLDivElement | null>(null)
 
@@ -104,13 +109,13 @@ export default function EditExpense() {
                 value={ amount }
                 onChange={ it => setAmount(+(+(it.target.value) as number).toFixed(2)) }
                 type="number"
-                inputProps={{ step: 0.01 }}
+                inputProps={ { step: 0.01 } }
                 startAdornment={ <InputAdornment position="start">$</InputAdornment> }
                 required
               />
             </FormControl>
-            <AccountSelector setAccount={ setAccount } />
-            <CategorySelector setCategory={ setCategory } />
+            <AccountSelector account={ account } setAccount={ setAccount } />
+            <CategorySelector category={ category } setCategory={ setCategory } />
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <KeyboardDatePicker
                 disableToolbar
@@ -145,10 +150,11 @@ export default function EditExpense() {
 }
 
 interface AccountSelectorProps {
+  account: Account | null
   setAccount: React.Dispatch<React.SetStateAction<Account | null>>
 }
 
-function AccountSelector({ setAccount }: AccountSelectorProps) {
+function AccountSelector({ account, setAccount }: AccountSelectorProps) {
 
   const dispatch = useDispatch()
 
@@ -161,6 +167,7 @@ function AccountSelector({ setAccount }: AccountSelectorProps) {
   return (
     <Autocomplete
       id="account-selector"
+      value={ account }
       options={ Object.values(accounts) as Option[] }
       onChange={ (event, newValue) => {
         if (newValue?.message) {
@@ -198,10 +205,11 @@ function AccountSelector({ setAccount }: AccountSelectorProps) {
 }
 
 interface CategorySelectorProps {
+  category: CategoryType | null
   setCategory: React.Dispatch<React.SetStateAction<CategoryType | null>>
 }
 
-function CategorySelector({ setCategory }: CategorySelectorProps) {
+function CategorySelector({ category, setCategory }: CategorySelectorProps) {
 
   const dispatch = useDispatch()
 
@@ -214,6 +222,7 @@ function CategorySelector({ setCategory }: CategorySelectorProps) {
   return (
     <Autocomplete
       id="account-selector"
+      value={ category }
       options={ Object.values(categories) as Option[] }
       onChange={ (event, newValue) => {
         if (newValue?.message) {
