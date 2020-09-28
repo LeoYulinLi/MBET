@@ -30,7 +30,7 @@ export default function EditExpense() {
   const [amount, setAmount] = useState<number>(0)
   const [account, setAccount] = useState<Account | null>(null)
   const [category, setCategory] = useState<CategoryType | null>(null)
-  const [date, setDate] = useState<Date>(new Date(Date.now()))
+  const [date, setDate] = useState<Date | null>(new Date(Date.now()))
 
   useEffect(() => {
     if (providedExpense) {
@@ -119,7 +119,7 @@ export default function EditExpense() {
                 id="date-picker-inline"
                 label="Date picker inline"
                 value={ date }
-                onChange={ it => it && setDate(it) }
+                onChange={ it => setDate(it) }
                 KeyboardButtonProps={ {
                   'aria-label': 'change date',
                 } }
