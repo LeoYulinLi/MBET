@@ -1,4 +1,21 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# MBET
+![Github Pages](https://github.com/LeoYulinLi/MBET/workflows/Github%20Pages/badge.svg)
+![Build and ping FeaturePeek](https://github.com/LeoYulinLi/MBET/workflows/Build%20and%20ping%20FeaturePeek/badge.svg)
+
+An expense tracker built during Mint Bean Hackathon
+
+## Live Demo
+https://leoyulinli.github.io/MBET/
+
+## Screenshots
+<img style="max-width: 100%;" src="https://mbep.sfo2.cdn.digitaloceanspaces.com/MBET-1.png">
+
+<img style="max-width: 100%;" height="462" src="https://mbep.sfo2.cdn.digitaloceanspaces.com/MBET-2.png">
+
+<img style="max-width: 100%;" height="747" src="https://mbep.sfo2.cdn.digitaloceanspaces.com/MBET-3.png">
+
+<img style="max-width: 100%;" height="747" src="https://mbep.sfo2.cdn.digitaloceanspaces.com/MBET-4.png">
+
 
 ## Available Scripts
 
