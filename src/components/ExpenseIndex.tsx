@@ -26,6 +26,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 
 export default function () {
@@ -38,6 +40,11 @@ export default function () {
 
   const accountFilterState = useState<number[]>([])
   const categoryFilterState = useState<number[]>([])
+
+  const dateUtils = new DateFnsUtils()
+
+  const [startDate, setStartDate] = useState<Date | null>(dateUtils.startOfMonth(new Date()))
+  const [endDate, setEndDate] = useState<Date | null>(dateUtils.endOfMonth(new Date()))
 
   const sortByState = useState<keyof Expense>("date")
   const orderState = useState<"asc" | "desc">("desc")
@@ -54,6 +61,12 @@ export default function () {
         return false
       }
       if (categoryFilters.length > 0 && !categoryFilters.includes(it.categoryId)) {
+        return false
+      }
+      if (startDate && dateUtils.isBefore(it.date, startDate)) {
+        return false
+      }
+      if (endDate && dateUtils.isAfter(it.date, endDate)) {
         return false
       }
       return true
@@ -85,7 +98,7 @@ export default function () {
       }
 
     }))
-  }, [accountFilters, categoryFilters, sortBy, order, expenses])
+  }, [accountFilters, categoryFilters, sortBy, order, expenses, startDate, endDate])
 
   const dispatch = useDispatch()
 
@@ -215,6 +228,42 @@ export default function () {
               <Filter values={ categories } label="Category" valueState={ categoryFilterState } />
             </Grid>
           </Grid>
+          <MuiPickersUtilsProvider utils={ DateFnsUtils }>
+          <Grid container spacing={ 2 }>
+            <Grid item xs={ 12 } md={ 6 }>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="yyyy-MM-dd"
+                margin="normal"
+                id="date-picker-inline"
+                label="Date picker inline"
+                value={ startDate }
+                onChange={ it => setStartDate(it) }
+                KeyboardButtonProps={ {
+                  'aria-label': 'set start date',
+                } }
+                style={ { width: "100%" } }
+              />
+            </Grid>
+            <Grid item xs={ 12 } md={ 6 }>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="yyyy-MM-dd"
+                margin="normal"
+                id="date-picker-inline"
+                label="Date picker inline"
+                value={ endDate }
+                onChange={ it => setEndDate(it) }
+                KeyboardButtonProps={ {
+                  'aria-label': 'set end date',
+                } }
+                style={ { width: "100%" } }
+              />
+            </Grid>
+          </Grid>
+          </MuiPickersUtilsProvider>
           <Sort options={ ["title", "date", "account", "category", "amount"] } sortByState={ sortByState }
                 orderState={ orderState } />
         </Box>
