@@ -18,7 +18,7 @@ export default function AccountCard({ account }: AccountProps) {
 
   const BankCard = styled(Card)({
     background: account.color,
-    color: getContrastRatio("#000", account.color) < 5 ? "white" : "black"
+    color: getContrastRatio("#000", account.color) < 8 ? "white" : "black"
   })
 
   return (

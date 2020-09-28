@@ -373,11 +373,11 @@ function CustomChip({ value }: CustomChipProps) {
 
   const BackgroundChip = styled(Chip)({
     background: value.color,
-    color: getContrastRatio("#000", value.color) < 6 ? "white" : "black"
+    color: getContrastRatio("#000", value.color) < 8 ? "white" : "black"
   })
 
   const ColorIcon = styled(Icon)({
-    color: getContrastRatio("#000", value.color) < 6 ? "white" : "black"
+    color: getContrastRatio("#000", value.color) < 8 ? "white" : "black"
   })
 
   return (

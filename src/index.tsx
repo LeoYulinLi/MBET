@@ -21,7 +21,7 @@ const store = configureStore({
       id: 1234,
       title: "Bank of the Bank",
       color: "#1776d7",
-      icon: "add",
+      icon: "star",
       type: "checking"
     }
   },

@@ -27,3 +27,59 @@ export interface Expense {
 }
 
 export type NewExpense = Omit<Expense, "id">
+
+// https://casesandberg.github.io/react-color/
+export const colors = [
+  "#f44336",
+  "#e91e63",
+  "#9c27b0",
+  "#673ab7",
+  "#3f51b5",
+  "#1776d7",
+  "#2196f3",
+  "#03a9f4",
+  "#00bcd4",
+  "#009688",
+  "#4caf50",
+  "#8bc34a",
+  "#cddc39",
+  "#ffeb3b",
+  "#ffc107",
+  "#ff9800",
+  "#ff5722",
+  "#795548",
+  "#607d8b",
+  "#000000"
+]
+
+export const icons = [
+  "account_balance",
+  "access_time",
+  "audiotrack",
+  "attachment",
+  "book",
+  "build",
+  "check",
+  "clear",
+  "cloud",
+  "create",
+  "directions_bus",
+  "directions_car",
+  "flight_takeoff",
+  "kitchen",
+  "laptop_mac",
+  "local_parking",
+  "location_on",
+  "music_note",
+  "navigation",
+  "payment",
+  "person",
+  "phone_android",
+  "poll",
+  "print",
+  "sim_card",
+  "star",
+  "videogame_asset",
+  "visibility",
+  "work"
+]
