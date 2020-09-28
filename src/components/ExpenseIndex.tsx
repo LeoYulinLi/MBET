@@ -85,7 +85,7 @@ export default function () {
       }
 
     }))
-  }, [accountFilters, categoryFilters, sortBy, order])
+  }, [accountFilters, categoryFilters, sortBy, order, expenses])
 
   const dispatch = useDispatch()
 
@@ -215,7 +215,8 @@ export default function () {
               <Filter values={ categories } label="Category" valueState={ categoryFilterState } />
             </Grid>
           </Grid>
-          <Sort options={["title", "date", "account", "category", "amount"]} sortByState={sortByState} orderState={orderState} />
+          <Sort options={ ["title", "date", "account", "category", "amount"] } sortByState={ sortByState }
+                orderState={ orderState } />
         </Box>
       </Paper>
       { renderBaseOnEmpty() }
@@ -239,7 +240,7 @@ function Sort(props: SortProps) {
   return (
     <Grid container spacing={ 2 }>
       <Grid item xs={ 12 } md={ 6 }>
-        <FormControl style={{ width: "100%" }}>
+        <FormControl style={ { width: "100%" } }>
           <InputLabel id={ `sortLabel` }>Sort By</InputLabel>
           <Select
             labelId={ `sortLabel` }
@@ -254,7 +255,7 @@ function Sort(props: SortProps) {
         </FormControl>
       </Grid>
       <Grid item xs={ 12 } md={ 6 }>
-        <FormControl style={{ width: "100%" }}>
+        <FormControl style={ { width: "100%" } }>
           <InputLabel id={ `orderLabel` }>Order</InputLabel>
           <Select
             labelId={ `orderLabel` }
