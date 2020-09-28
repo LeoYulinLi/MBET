@@ -12,7 +12,7 @@ const store = configureStore({
   accounts: {
     1345: {
       id: 1345,
-      title: "12435",
+      title: "BankBank",
       color: "#000",
       icon: "account_balance",
       type: "saving"
@@ -31,6 +31,12 @@ const store = configureStore({
       title: "Food",
       color: "#ffbd55",
       icon: "local_pizza"
+    },
+    690: {
+      id: 690,
+      title: "Cat",
+      color: "#3e951b",
+      icon: "pets"
     }
   },
   expenses: {
@@ -41,6 +47,14 @@ const store = configureStore({
       accountId: 1234,
       categoryId: 1024,
       date: new Date("2020-02-02")
+    },
+    2456: {
+      id: 2456,
+      title: "Cat food",
+      amount: 20.48,
+      accountId: 1345,
+      categoryId: 690,
+      date: new Date("2020-09-24")
     }
   },
   ui: {

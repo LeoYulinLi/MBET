@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../states/rootReducer";
 import { Chip, getContrastRatio, IconButton, Table } from "@material-ui/core";
@@ -21,6 +21,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { deleteExpense } from "../states/expense/expenseActions";
 import { openAddExpense } from "../states/ui/uiActions";
 import { DeleteForever, Edit } from "@material-ui/icons";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import Input from "@material-ui/core/Input";
+import Paper from "@material-ui/core/Paper";
 
 
 export default function () {
@@ -28,6 +33,59 @@ export default function () {
   const expenses = useSelector((state: RootState) => state.expenses)
   const accounts = useSelector((state: RootState) => state.accounts)
   const categories = useSelector((state: RootState) => state.categories)
+
+  const [expenseValues, setExpenseValues] = useState(Object.values(expenses))
+
+  const accountFilterState = useState<number[]>([])
+  const categoryFilterState = useState<number[]>([])
+
+  const sortByState = useState<keyof Expense>("date")
+  const orderState = useState<"asc" | "desc">("desc")
+
+  const [accountFilters] = accountFilterState
+  const [categoryFilters] = categoryFilterState
+
+  const [sortBy] = sortByState
+  const [order] = orderState
+
+  useEffect(() => {
+    setExpenseValues(Object.values(expenses).filter(it => {
+      if (accountFilters.length > 0 && !accountFilters.includes(it.accountId)) {
+        return false
+      }
+      if (categoryFilters.length > 0 && !categoryFilters.includes(it.categoryId)) {
+        return false
+      }
+      return true
+    }).sort((a, b) => {
+
+      function comparator(str1: any, str2: any) {
+        if (str1 < str2)
+          return -1;
+        if (str1 > str2)
+          return 1;
+        return 0;
+      }
+
+      let aValue = a[sortBy]
+      let bValue = b[sortBy]
+
+      if (sortBy === "accountId") {
+        aValue = accounts[aValue as number].title
+        bValue = accounts[bValue as number].title
+      } else if (sortBy === "categoryId") {
+        aValue = categories[aValue as number].title
+        bValue = categories[bValue as number].title
+      }
+
+      if (order === "asc") {
+        return comparator(aValue, bValue)
+      } else {
+        return -comparator(aValue, bValue)
+      }
+
+    }))
+  }, [accountFilters, categoryFilters, sortBy, order])
 
   const dispatch = useDispatch()
 
@@ -42,8 +100,6 @@ export default function () {
   const isPhone = useMediaQuery(theme.breakpoints.down('sm'));
 
   function renderBaseOnEmpty() {
-
-    const expenseValues = Object.values(expenses)
 
     function renderBaseOnScreenSize() {
       if (isPhone) {
@@ -146,9 +202,117 @@ export default function () {
 
   return (
     <Box my={ 4 }>
+      <Paper elevation={ 0 } style={ {
+        background: "#efefef"
+      } }>
+        <Box p={ 2 }>
+          <Typography variant="h6">Filters</Typography>
+          <Grid container spacing={ 2 }>
+            <Grid item xs={ 12 } md={ 6 }>
+              <Filter values={ accounts } label="Account" valueState={ accountFilterState } />
+            </Grid>
+            <Grid item xs={ 12 } md={ 6 }>
+              <Filter values={ categories } label="Category" valueState={ categoryFilterState } />
+            </Grid>
+          </Grid>
+          <Sort options={["title", "date", "account", "category", "amount"]} sortByState={sortByState} orderState={orderState} />
+        </Box>
+      </Paper>
       { renderBaseOnEmpty() }
     </Box>
   )
+}
+
+interface SortProps {
+  options: string[]
+  sortByState: any // [string, Dispatch<SetStateAction<string>>]
+  orderState: any // ["asc" | "desc", Dispatch<SetStateAction<"asc" | "desc">>]
+}
+
+function Sort(props: SortProps) {
+
+  const { options } = props;
+
+  const [sortBy, setSortBy] = props.sortByState
+  const [order, setOrder] = props.orderState
+
+  return (
+    <Grid container spacing={ 2 }>
+      <Grid item xs={ 12 } md={ 6 }>
+        <FormControl style={{ width: "100%" }}>
+          <InputLabel id={ `sortLabel` }>Sort By</InputLabel>
+          <Select
+            labelId={ `sortLabel` }
+            id={ `sort` }
+            value={ sortBy }
+            onChange={ it => setSortBy(it.target.value) }
+          >
+            { Object.values(options).map(value => (
+              <MenuItem value={ value }>{ value }</MenuItem>
+            )) }
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={ 12 } md={ 6 }>
+        <FormControl style={{ width: "100%" }}>
+          <InputLabel id={ `orderLabel` }>Order</InputLabel>
+          <Select
+            labelId={ `orderLabel` }
+            id={ `order` }
+            value={ order }
+            onChange={ it => setOrder(it.target.value) }
+          >
+            <MenuItem value="asc">Ascending</MenuItem>
+            <MenuItem value="desc">Descending</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
+  )
+
+}
+
+interface FilterProps {
+  values: Record<number, Account | Category>
+  label: string
+  valueState: any // [number[], Dispatch<SetStateAction<number[]>>]
+}
+
+function Filter(props: FilterProps) {
+
+  const { values, label } = props;
+
+  const [valueId, setValueId] = props.valueState
+
+  return (
+    <FormControl style={ { minWidth: "100%" } }>
+      <InputLabel id={ `filter${ label }Label` }>{ label }</InputLabel>
+      <Select
+        labelId={ `filter${ label }Label` }
+        id={ `filter${ label }` }
+        multiple
+        value={ valueId }
+        onChange={ it => setValueId(it.target.value as number[]) }
+        input={ <Input id={ `selectMultiple${ label }` } /> }
+        renderValue={ (selected) => (
+          <Grid container spacing={ 1 }>
+            { (selected as number[]).map((valueId) => (
+              <Grid item>
+                <CustomChip value={ values[valueId] } />
+              </Grid>
+            )) }
+          </Grid>
+        ) }
+      >
+        { Object.values(values).map((value) => (
+          <MenuItem key={ value.id } value={ value.id }>
+            <CustomChip value={ value } />
+          </MenuItem>
+        )) }
+      </Select>
+    </FormControl>
+  )
+
 }
 
 interface CustomChipProps {
@@ -159,11 +323,11 @@ function CustomChip({ value }: CustomChipProps) {
 
   const BackgroundChip = styled(Chip)({
     background: value.color,
-    color: getContrastRatio("#000", value.color) < 5 ? "white" : "black"
+    color: getContrastRatio("#000", value.color) < 6 ? "white" : "black"
   })
 
   const ColorIcon = styled(Icon)({
-    color: getContrastRatio("#000", value.color) < 5 ? "white" : "black"
+    color: getContrastRatio("#000", value.color) < 6 ? "white" : "black"
   })
 
   return (
