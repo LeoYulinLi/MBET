@@ -15,15 +15,17 @@ import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import EditAccount from "./components/EditAccount";
 import CategoryIndex from "./components/CategoryIndex";
 import EditCategory from "./components/EditCategory";
+import Box from "@material-ui/core/Box";
 
 function App() {
 
   const useStyles = makeStyles(theme =>
     createStyles({
       fab: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing(12),
         right: theme.spacing(4),
+        zIndex: 5
       }
     }),
   );
@@ -49,12 +51,14 @@ function App() {
         </Fab>
       </Tooltip>
       <Container maxWidth="lg">
-        <Switch>
-          <Route exact path="/overview" component={ Overview } />
-          <Route exact path="/accounts" component={ AccountIndex } />
-          <Route exact path="/categories" component={ CategoryIndex } />
-          <Route exact path="/expenses" component={ ExpenseIndex } />
-        </Switch>
+        <Box pb={20}>
+          <Switch>
+            <Route exact path="/overview" component={ Overview } />
+            <Route exact path="/accounts" component={ AccountIndex } />
+            <Route exact path="/categories" component={ CategoryIndex } />
+            <Route exact path="/expenses" component={ ExpenseIndex } />
+          </Switch>
+        </Box>
       </Container>
     </Router>
 

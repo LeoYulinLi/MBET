@@ -43,8 +43,8 @@ export default function () {
 
   const dateUtils = new DateFnsUtils()
 
-  const [startDate, setStartDate] = useState<Date | null>(dateUtils.startOfMonth(new Date()))
-  const [endDate, setEndDate] = useState<Date | null>(dateUtils.endOfMonth(new Date()))
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
 
   const sortByState = useState<keyof Expense>("date")
   const orderState = useState<"asc" | "desc">("desc")
@@ -128,7 +128,7 @@ export default function () {
                           <Typography variant="h5">{ expense.title }</Typography>
                         </Grid>
                         <Grid item xs={ 3 }>
-                          <Typography variant="h6" align="right">${ expense.amount }</Typography>
+                          <Typography variant="h6" align="right">${ expense.amount.toFixed(2) }</Typography>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -177,7 +177,7 @@ export default function () {
                   <TableCell>{ expense.date.toLocaleDateString() }</TableCell>
                   <TableCell><CustomChip value={ accounts[expense.accountId] } /></TableCell>
                   <TableCell><CustomChip value={ categories[expense.categoryId] } /></TableCell>
-                  <TableCell>${ expense.amount }</TableCell>
+                  <TableCell>${ expense.amount.toFixed(2) }</TableCell>
                   <TableCell>
                     <IconButton color="primary" size="small" aria-label={ `edit expense ${ expense.title }` }
                                 component="span" onClick={ handleEdit(expense) }>
@@ -209,7 +209,18 @@ export default function () {
         </Grid>
       )
     } else {
-      return renderBaseOnScreenSize()
+      return (
+        <>
+          { renderBaseOnScreenSize() }
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Typography variant="h6">
+                { `Total: $${expenseValues.map(it => it.amount).reduce((acc, v) => acc + v, 0).toFixed(2)}` }
+              </Typography>
+            </Grid>
+          </Grid>
+        </>
+      )
     }
   }
 
@@ -237,7 +248,7 @@ export default function () {
                 format="yyyy-MM-dd"
                 margin="normal"
                 id="date-picker-inline"
-                label="Date picker inline"
+                label="Start Date"
                 value={ startDate }
                 onChange={ it => setStartDate(it) }
                 KeyboardButtonProps={ {
@@ -253,7 +264,7 @@ export default function () {
                 format="yyyy-MM-dd"
                 margin="normal"
                 id="date-picker-inline"
-                label="Date picker inline"
+                label="End Date"
                 value={ endDate }
                 onChange={ it => setEndDate(it) }
                 KeyboardButtonProps={ {

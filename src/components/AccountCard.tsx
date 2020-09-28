@@ -27,7 +27,7 @@ export default function AccountCard({ account }: AccountProps) {
         <CardActionArea onClick={() => dispatch(openEditAccount(account))}>
           <CardContent>
             <Grid container justify="space-between" spacing={1}>
-              <Grid item xs={9}>
+              <Grid item xs={12}>
                 <Grid container alignItems="center" spacing={1}>
                   <Grid item>
                     <Icon>{ account.icon }</Icon>
@@ -41,9 +41,6 @@ export default function AccountCard({ account }: AccountProps) {
                     <Typography variant="subtitle2">{ account.type }</Typography>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography variant="h5" align="right">$1000</Typography>
               </Grid>
             </Grid>
           </CardContent>

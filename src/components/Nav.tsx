@@ -34,9 +34,10 @@ export default function Nav() {
     createStyles({
       bottomNav: {
         width: '100%',
-        position: 'absolute',
+        position: 'fixed',
         bottom: 0,
-        background: "#f0f0f0"
+        background: "#f0f0f0",
+        zIndex: 5
       }
     }),
   );
@@ -47,7 +48,7 @@ export default function Nav() {
     if (isPhone) {
       return (
         <>
-          <AppBar position="static">
+          <AppBar position="sticky">
             <Container maxWidth="lg">
               <Toolbar>
                 <Typography variant="h6">MBET</Typography>

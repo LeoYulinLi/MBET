@@ -102,8 +102,9 @@ export default function EditExpense() {
               <Input
                 id="standard-adornment-amount"
                 value={ amount }
-                onChange={ it => setAmount(+(it.target.value)) }
+                onChange={ it => setAmount(+(+(it.target.value) as number).toFixed(2)) }
                 type="number"
+                inputProps={{ step: 0.01 }}
                 startAdornment={ <InputAdornment position="start">$</InputAdornment> }
                 required
               />
