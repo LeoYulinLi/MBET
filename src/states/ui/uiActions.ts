@@ -1,6 +1,8 @@
-import { Expense } from "../../types";
+import { Account, Category, Expense } from "../../types";
 
 export const ADD_EXPENSE = "ADD_EXPENSE"
+export const OPEN_EDIT_ACCOUNT = "OPEN_EDIT_ACCOUNT"
+export const OPEN_EDIT_CATEGORY = "OPEN_EDIT_CATEGORY"
 
 export interface AddExpenseAction {
   type: typeof ADD_EXPENSE
@@ -28,3 +30,59 @@ export function closeAddExpense(): AddExpenseAction {
     }
   }
 }
+
+export interface EditAccountAction {
+  type: typeof OPEN_EDIT_ACCOUNT
+  action: {
+    opened: boolean,
+    providedAccount?: Account
+  }
+}
+
+export function openEditAccount(providedAccount?: Account) {
+  return {
+    type: OPEN_EDIT_ACCOUNT,
+    action: {
+      opened: true,
+      providedAccount
+    }
+  }
+}
+
+export function closeEditAccount() {
+  return {
+    type: OPEN_EDIT_ACCOUNT,
+    action: {
+      opened: false
+    }
+  }
+}
+
+export interface EditCategoryAction {
+  type: typeof OPEN_EDIT_CATEGORY
+  action: {
+    opened: boolean,
+    providedCategory?: Category
+  }
+}
+
+export function openCategoryAccount(providedCategory?: Category) {
+  return {
+    type: OPEN_EDIT_CATEGORY,
+    action: {
+      opened: true,
+      providedCategory
+    }
+  }
+}
+
+export function closeCategoryAccount() {
+  return {
+    type: OPEN_EDIT_CATEGORY,
+    action: {
+      opened: false
+    }
+  }
+}
+
+export type UIActionType = AddExpenseAction | EditAccountAction | EditCategoryAction

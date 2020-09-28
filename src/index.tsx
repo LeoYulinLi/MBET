@@ -60,6 +60,12 @@ const store = configureStore({
   ui: {
     addExpense: {
       opened: false
+    },
+    editAccount: {
+      opened: false
+    },
+    editCategory: {
+      opened: false
     }
   }
 })
